@@ -64,3 +64,11 @@ Books a ticket for a specified concert.
     "message": "Concert not found or no available tickets"
   }
   ```
+
+## Database Configuration
+- Make sure you have installed PostgreSQL on your local computer. 
+- Create a database named "ticket". 
+- Adjust the database credentials in the `application.properties` file to match your database settings. 
+- The default credentials for this application are:
+  - Username: postgres
+  - Password: postgres
