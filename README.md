@@ -13,20 +13,26 @@ Retrieves a list of active concerts.
     - 200 OK: Success
 - **Example Response:**
   ```json
-  [
-    {
-      "id": "1",
-      "name": "Concert 1",
-      "date": "2023-06-01",
-      "availableTickets": 100
-    },
-    {
-      "id": "2",
-      "name": "Concert 2",
-      "date": "2023-06-15",
-      "availableTickets": 50
-    }
-  ]
+  {
+    "body": [
+        {
+            "id": "4028e488887ca02301887ca028e60000",
+            "name": "Coldplay Concert",
+            "availableTickets": 9999,
+            "createdDate": "2023-06-02T15:00:51.046+00:00",
+            "modifiedDate": "2023-06-03T15:03:35.232+00:00"
+        },
+        {
+            "id": "4028e488887ca02301887ca028e60001",
+            "name": "Stand Up Comedy Show",
+            "availableTickets": 20,
+            "createdDate": "2023-06-02T15:00:51.046+00:00",
+            "modifiedDate": "2023-06-03T15:03:35.232+00:00"
+        }
+    ],
+    "statusMessage": "OK",
+    "statusCode": 200
+  }
   ```
 
 ### Book Ticket
@@ -49,19 +55,28 @@ Books a ticket for a specified concert.
 - **Example Response (Success):**
   ```json
   {
-    "id": "ABC123",
-    "concert": {
-      "id": "1",
-      "name": "Concert 1",
-      "date": "2023-06-01",
-      "availableTickets": 99
-    }
+    "body": {
+        "id": "4028e4888881b7f4018881c906270000",
+        "concert": {
+            "id": "4028e488887ca02301887ca028e60000",
+            "name": "Coldplay Concert",
+            "availableTickets": 9999,
+            "createdDate": "2023-06-02T15:00:51.046+00:00",
+            "modifiedDate": "2023-06-03T15:03:35.232+00:00"
+        },
+        "createdDate": "2023-06-03T15:03:35.204+00:00",
+        "modifiedDate": "2023-06-03T15:03:35.204+00:00"
+    },
+    "statusMessage": "OK",
+    "statusCode": 200
   }
   ```
 - **Example Response (Not Found):**
   ```json
   {
-    "message": "Concert not found or no available tickets"
+    "statusMessage": "Not Found",
+    "errors": null,
+    "statusCode": 404
   }
   ```
 
@@ -72,3 +87,25 @@ Books a ticket for a specified concert.
 - The default credentials for this application are:
   - Username: postgres
   - Password: postgres
+
+
+## Database Structure
+### Table: concert
+- **Description:** Stores information about concerts.
+- **Columns:**
+  - id (UUID, Primary Key): The unique identifier of the concert.
+  - name (VARCHAR, Not Null): The name of the concert.
+  - available_tickets (INTEGER, Not Null): The number of available tickets for the concert.
+  - created_date (TIMESTAMP, Not Null): The date and time when the concert was created.
+  - modified_date (TIMESTAMP): The date and time when the concert was last modified.
+
+### Table: ticket
+- **Description:** Stores information about tickets booked for concerts.
+- **Columns:**
+  - id (UUID, Primary Key): The unique identifier of the ticket.
+  - concert_id (UUID, Not Null): The foreign key referencing the concert that the ticket is booked for.
+  - created_date (TIMESTAMP, Not Null): The date and time when the ticket was created.
+  - modified_date (TIMESTAMP): The date and time when the ticket was last modified.
+
+### Relationships:
+The "ticket" table has a Many-to-One relationship with the "concert" table. Each ticket is associated with a single concert.
